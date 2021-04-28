@@ -1,13 +1,16 @@
-import { createWarehouse, addStockToWarehouse, removeStockFromWarehouse } from './warehouse';
 
-const freshWarehouse = createWarehouse();
+import { create as creatStock } from './stock';
+import { create as createWarehouse, removeStock } from './warehouse';
 
-const stockedWarehouse = addStockToWarehouse({ name: 'Coke', quantity: 22 }, freshWarehouse);
+const cokeStock = creatStock('Coke', 22);
+const warehouse = createWarehouse(cokeStock);
 
-const [withdrawnStock, updatedWarehouse] = removeStockFromWarehouse({ name: 'Coke', quantity: 18 }, stockedWarehouse);
+const [withdrawnStock, updatedWarehouse] = removeStock({ name: 'Coke', quantity: 18 }, warehouse);
 
+// eslint-disable-next-line functional/no-expression-statement
 console.log(withdrawnStock, updatedWarehouse);
 
-const [moreWithdrawnStock, possiblyUpdatedWarehouse] = removeStockFromWarehouse({ name: 'Coke', quantity: 7 }, updatedWarehouse);
+const [moreWithdrawnStock, possiblyUpdatedWarehouse] = removeStock({ name: 'Coke', quantity: 7 }, updatedWarehouse);
 
+// eslint-disable-next-line functional/no-expression-statement
 console.log(moreWithdrawnStock, possiblyUpdatedWarehouse);
