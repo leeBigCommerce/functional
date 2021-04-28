@@ -6,12 +6,15 @@
   "env": {
     "es6": true
   },
-  "plugins": [
-    "@typescript-eslint",
-    "functional"
-  ],
+  "plugins": ["@typescript-eslint", "functional"],
   "rules": {
-    "@typescript-eslint/explicit-function-return-type": "error"
+    "@typescript-eslint/explicit-function-return-type": "error",
+    "functional/no-conditional-statement": [
+      "error",
+      {
+        "allowReturningBranches": true
+      }
+    ]
   },
   "extends": [
     "eslint:recommended",

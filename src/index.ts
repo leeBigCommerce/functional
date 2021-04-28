@@ -1,20 +1,13 @@
-const names = ['Lee', 'Fred'];
+import { createWarehouse, addStockToWarehouse, removeStockFromWarehouse } from './warehouse';
 
-// No pushing into arrays! Immutability only
-const moreNames = [...names, 'Joe'];
+const freshWarehouse = createWarehouse();
 
-// Can't do this, it modifies the array
-// const finalName = moreNames.pop();
+const stockedWarehouse = addStockToWarehouse({ name: 'Coke', quantity: 22 }, freshWarehouse);
 
-// Using object methods is okay, so long as they don't mutate the object
-const allNamesJoined = moreNames.join(', ');
+const [withdrawnStock, updatedWarehouse] = removeStockFromWarehouse({ name: 'Coke', quantity: 18 }, stockedWarehouse);
 
-// This is okay, we're making an array, not modifying the string
-// const splitNames = allNamesJoined.split(', ');
+console.log(withdrawnStock, updatedWarehouse);
 
-const message = `Hello ${allNamesJoined}`;
+const [moreWithdrawnStock, possiblyUpdatedWarehouse] = removeStockFromWarehouse({ name: 'Coke', quantity: 7 }, updatedWarehouse);
 
-// This is already wrong - side effect!
-// Basically, every function's output must be a returned value
-// eslint-disable-next-line functional/no-expression-statement
-console.log(message);
+console.log(moreWithdrawnStock, possiblyUpdatedWarehouse);
