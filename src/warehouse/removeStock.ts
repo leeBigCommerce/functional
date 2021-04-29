@@ -2,6 +2,7 @@ import { Stock } from "../stock";
 import { Order } from "../order";
 
 import { Warehouse } from "./create";
+import { getStockQuantity } from './getStockQuantity';
 
 type OptionalStock = Stock | undefined;
 
@@ -11,7 +12,7 @@ type RemoveStock = (
 ) => readonly [Warehouse, OptionalStock];
 
 export const removeStock: RemoveStock = (warehouse, requestForStock) => {
-  const currentQuantity = warehouse[requestForStock.name] || 0;
+  const currentQuantity = getStockQuantity(warehouse, requestForStock.name);
   const newQuantity = currentQuantity - requestForStock.quantity;
 
   if (newQuantity < 0) {

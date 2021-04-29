@@ -1,27 +1,37 @@
 /* eslint-disable functional/functional-parameters */
 /* eslint-disable functional/no-expression-statement */
-import { create as createOrder } from './order';
-import { create as createWarehouse, removeStock } from './warehouse';
-import { create as createStock } from './stock';
 
-test("testOrderIsFilledIfEnoughInWarehouse", () => {
-    const stockOfOneHundredCokes = createStock('Coke', 100);
-    const warehouse = createWarehouse(stockOfOneHundredCokes);
+// Attempting to mimic tests shown in https://martinfowler.com/articles/mocksArentStubs.html
 
-    const orderForTwentyTwoCokes = createOrder('Coke', 22);
+import { create as createOrder } from "./order";
+import { create as createStock } from "./stock";
+import {
+  create as createWarehouse,
+  getStockQuantity,
+  removeStock,
+} from "./warehouse";
 
-    const [_, coke] = removeStock(warehouse, orderForTwentyTwoCokes)
+describe("OrderStateTester", () => {
+  const TALISKER = "Talisker";
+  const warehouse = createWarehouse(createStock(TALISKER, 50));
 
-    expect(coke?.quantity).toBe(22);
-});
+  test("testOrderIsFilledIfEnoughInWarehouse", () => {
+    const [updatedWarehouse, removedTalisker] = removeStock(
+      warehouse,
+      createOrder(TALISKER, 50)
+    );
 
-test("testOrderDoesNotRemoveIfNotEnough", () => {
-    const stockOfEightCokes = createStock('Coke', 8);
-    const warehouse = createWarehouse(stockOfEightCokes);
+    expect(getStockQuantity(updatedWarehouse, TALISKER)).toBe(0);
+    expect(removedTalisker?.quantity).toBe(50);
+  });
 
-    const orderForTwentyTwoCokes = createOrder('Coke', 22);
+  test("testOrderDoesNotRemoveIfNotEnough", () => {
+    const [updatedWarehouse, removedTalisker] = removeStock(
+      warehouse,
+      createOrder(TALISKER, 51)
+    );
 
-    const [_, coke] = removeStock(warehouse, orderForTwentyTwoCokes)
-
-    expect(coke).toBe(undefined);
+    expect(getStockQuantity(updatedWarehouse, TALISKER)).toBe(50);
+    expect(removedTalisker).toBe(undefined);
+  });
 });
