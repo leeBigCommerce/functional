@@ -1,16 +1,30 @@
 
 import { create as creatStock } from './stock';
 import { create as createWarehouse, removeStock } from './warehouse';
+import { create as createOrder } from './order';
 
 const cokeStock = creatStock('Coke', 22);
 const warehouse = createWarehouse(cokeStock);
 
-const [withdrawnStock, updatedWarehouse] = removeStock({ name: 'Coke', quantity: 18 }, warehouse);
+// eslint-disable-next-line functional/no-expression-statement
+console.log('Our initially stocked warehouse:', warehouse);
+
+const orderForCoke = createOrder('Coke', 18);
 
 // eslint-disable-next-line functional/no-expression-statement
-console.log(withdrawnStock, updatedWarehouse);
+console.log('Recieves an order for coke', orderForCoke);
 
-const [moreWithdrawnStock, possiblyUpdatedWarehouse] = removeStock({ name: 'Coke', quantity: 7 }, updatedWarehouse);
+const [updatedWarehouse, withdrawnStock] = removeStock(warehouse, orderForCoke);
 
 // eslint-disable-next-line functional/no-expression-statement
-console.log(moreWithdrawnStock, possiblyUpdatedWarehouse);
+console.log('Our warehouse becomes:', updatedWarehouse, 'With stock removed:', withdrawnStock);
+
+const orderForEvenMoreCoke = createOrder('Coke', 6);
+
+// eslint-disable-next-line functional/no-expression-statement
+console.log('Our newly updated warehouse receives another order for coke', orderForEvenMoreCoke);
+
+const [possiblyUpdatedWarehouse, moreWithdrawnStock] = removeStock(updatedWarehouse, orderForEvenMoreCoke);
+
+// eslint-disable-next-line functional/no-expression-statement
+console.log('Our warehouse becomes:', possiblyUpdatedWarehouse, 'With stock removed:', moreWithdrawnStock);

@@ -8,4 +8,4 @@ export type Warehouse = Record<Name, Quantity>;
 
 type Create = (incomingStock: Stock) => Warehouse;
 
-export const create: Create = (incomingStock) => addStock(incomingStock, {});
+export const create: Create = (incomingStock) => addStock({}, incomingStock);

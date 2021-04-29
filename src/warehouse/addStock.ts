@@ -1,19 +1,13 @@
-import { Stock } from '../stock';
+import { Stock } from "../stock";
 
 type Name = string;
 type Quantity = number;
 
 type Warehouse = Record<Name, Quantity>;
 
-type AddStock = (
-  incomingStock: Stock,
-  warehouse: Warehouse
-) => Warehouse;
+type AddStock = (warehouse: Warehouse, incomingStock: Stock) => Warehouse;
 
-export const addStock: AddStock = (
-  incomingStock,
-  warehouse
-) => {
+export const addStock: AddStock = (warehouse, incomingStock) => {
   const currentQuantity = warehouse[incomingStock.name] || 0;
   const newQuantity = currentQuantity + incomingStock.quantity;
   const updatedWarehouse = {

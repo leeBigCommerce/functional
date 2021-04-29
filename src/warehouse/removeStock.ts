@@ -1,28 +1,21 @@
 import { Stock } from "../stock";
+import { Order } from "../order";
 
 import { Warehouse } from "./create";
-
-type Name = string;
-type Quantity = number;
-
-type RequestForStock = {
-  readonly name: Name;
-  readonly quantity: Quantity;
-};
 
 type OptionalStock = Stock | undefined;
 
 type RemoveStock = (
-  requestForStock: RequestForStock,
-  warehouse: Warehouse
-) => readonly [OptionalStock, Warehouse];
+  warehouse: Warehouse,
+  requestForStock: Order
+) => readonly [Warehouse, OptionalStock];
 
-export const removeStock: RemoveStock = (requestForStock, warehouse) => {
+export const removeStock: RemoveStock = (warehouse, requestForStock) => {
   const currentQuantity = warehouse[requestForStock.name] || 0;
   const newQuantity = currentQuantity - requestForStock.quantity;
 
   if (newQuantity < 0) {
-    return [undefined, warehouse];
+    return [warehouse, undefined];
   }
 
   const updatedWarehouse = {
@@ -35,5 +28,5 @@ export const removeStock: RemoveStock = (requestForStock, warehouse) => {
     quantity: requestForStock.quantity,
   };
 
-  return [withdrawnStock, updatedWarehouse];
+  return [updatedWarehouse, withdrawnStock];
 };
